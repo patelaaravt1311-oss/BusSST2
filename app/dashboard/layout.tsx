@@ -1,0 +1,36 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { useAuth } from "../../lib/auth-context";
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { role, loading } = useAuth();
+
+  useEffect(() => {
+    if (loading) return;
+    if (role === "admin") {
+      router.replace("/admin");
+    }
+  }, [role, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+        <Loader2 className="animate-spin text-slate-400" size={28} />
+      </div>
+    );
+  }
+
+  if (role === "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+        <Loader2 className="animate-spin text-slate-400" size={28} />
+      </div>
+    );
+  }
+
+  return <>{children}</>;
+}
